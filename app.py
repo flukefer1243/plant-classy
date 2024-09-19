@@ -7,7 +7,7 @@ def index():
     return render_template('index.html')
 
 @app.route("/aboutUs")
-def main():
+def aboutUs():
     return render_template('aboutUs.html')
 
 @app.route("/main")
@@ -15,7 +15,7 @@ def main():
     return render_template('main.html')
 
 @app.route("/result")
-def main():
+def result():
     return render_template('result.html')
 
 if __name__ == '__main__':
