@@ -3,7 +3,7 @@
         {
             "title": "⚠️ A new push has occurred!",
             "description": "Details of the latest push to the repository.",
-            "timestamp": "2015-12-31T12:00:00.000Z"
+            "timestamp": "${{ github.event.head_commit.timestamp }}"
         }
     ]
 }
