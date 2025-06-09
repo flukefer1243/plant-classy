@@ -6,17 +6,8 @@
             "fields": [
                 {
                 "name": "Branch",
-                "value": "`ref_name: ${{ github.ref_name }}`",
+                "value": "ok",
                 "inline": true
-                },
-                {
-                "name": "Repository",
-                "value": "[${{ github.repository }}](${{ github.event.repository.html_url }})",
-                "inline": true
-                },
-                {
-                "name": "Commit Message",
-                "value": "```\n${{ github.event.head_commit.message }}\n```"
                 }
             ],
             "timestamp": "${{ github.event.head_commit.timestamp }}"
