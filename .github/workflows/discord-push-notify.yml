@@ -17,4 +17,4 @@ jobs:
                           }]
                         }'
       with:
-        args: '${{ toJson(DISCORD_EMBEDS) }}'
+        args: '${{ toJson(env.DISCORD_EMBEDS) }}'
