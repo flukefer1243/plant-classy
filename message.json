@@ -1,4 +1,5 @@
-{
+{   
+    "content": "Test",
     "embeds": [
         {
             "title": "⚠️ A new push has occurred!",
