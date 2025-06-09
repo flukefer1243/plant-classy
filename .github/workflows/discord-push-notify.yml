@@ -3,32 +3,12 @@ name: Discord Push Notification # This is the name that will appear in the GitHu
 on: [push]
 
 jobs:
-  # ID of our job
-  webhook-request:
-    # OS to run our job on
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: Send a request to webhook
-      run: |
-        RESPONSE=$(curl -H "Content-Type: application/json" -X POST -d '{
-        "username": "GitHub",
-        "content": "@everyone",
-        "embeds": [
-          {
-            "type": "rich",
-            "title": "New Changes",
-            "description": "New changes on DroneGPS repository by ${{ github.actor }}",
-            "color": 2123412,
-            "thumbnail": {
-              "url": "https://avatars.githubusercontent.com/u/160980408?v=4"
-            },
-            "author": {
-              "name": "${{ github.actor }}",
-              "url": "https://github.com/${{ github.actor_id }}",
-              "icon_url": "https://avatars.githubusercontent.com/u/${{ github.actor_id }}?v=4"
-            },
-            "url": "https://github.com/"
-          }
-        ]
-        }' https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4
-        echo "Webhook server response: $RESPONSE"
+      - uses: actions/checkout@v2
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
+          raw-data: message.json
