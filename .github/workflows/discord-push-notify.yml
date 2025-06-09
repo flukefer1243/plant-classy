@@ -6,15 +6,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Discord notification
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4
-        DISCORD_EMBEDS: '{
-                          "embeds": [{
-                            "description": "Time travel!",
-                            "timestamp": "2015-12-31T12:00:00.000Z"
-                          }]
-                        }'
+    - name: Test Failure
+      uses: rjstone/discord-webhook-notify@v1
+      if: failure()
       with:
-        args: '{{ env.DISCORD_EMBEDS) }}'
+          severity: error
+          details: Test Failed!
+          webhookUrl: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
