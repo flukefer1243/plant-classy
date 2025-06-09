@@ -25,22 +25,43 @@ jobs: # Defines the jobs to be run in this workflow
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
 
         with: # Defines inputs specific to the 'Ilshidur/action-discord' action
-          args: | # The 'args' input defines the content of the Discord message.
-            # The | (pipe) character allows for a multi-line string.
-            # We're using GitHub context variables to create a dynamic message:
-            **New code pushed to ${{ github.ref_name }} by ${{ github.actor }}!**
-            # - ${{ github.ref_name }} will be the branch name (e.g., 'main', 'develop').
-            # - ${{ github.actor }} will be the GitHub username of the person who pushed.
-            # - ** makes text bold in Discord.
-
-            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
-            # - ${{ github.repository }} is the repo name (e.g., 'your-username/your-repo').
-            # - ${{ github.event.repository.html_url }} is the full URL to your repo on GitHub.
-            # - [Text](URL) is Markdown syntax for a clickable link.
-
-            **Commit Message:** `${{ github.event.head_commit.message }}`
-            # - ${{ github.event.head_commit.message }} is the message of the latest commit in the push.
-            # - ` ` creates inline code blocks in Discord for commit message readability.
-
-            **View changes:** ${{ github.event.compare }}
-            # - ${{ github.event.compare }} is a direct URL to the comparison view on GitHub for the pushed changes.
+          args: |
+            {
+              "content": "A new push has occurred!",
+              "username": "GitHub Actions Notifier",
+              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              "embeds": [
+                {
+                  "title": "Code Push Notification",
+                  "description": "Details of the latest push to the repository.",
+                  "color": 3066993, # A nice green color (decimal for #2ECC71)
+                  "author": {
+                    "name": "${{ github.actor }}",
+                    "icon_url": "https://github.com/${{ github.actor }}.png" # Fetch user's GitHub avatar
+                  },
+                  "fields": [
+                    {
+                      "name": "Branch",
+                      "value": "`${{ github.ref_name }}`",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "[${{ github.repository }}](${{ github.event.repository.html_url }})",
+                      "inline": true
+                    },
+                    {
+                      "name": "Commit Message",
+                      "value": "```\n${{ github.event.head_commit.message }}\n```",
+                      "inline": false
+                    }
+                  ],
+                  "timestamp": "${{ github.event.head_commit.timestamp }}", # Use the commit timestamp
+                  "footer": {
+                    "text": "View changes on GitHub",
+                    "icon_url": "https://github.githubassets.com/favicons/favicon.png"
+                  },
+                  "url": "${{ github.event.compare }}" # Make the title clickable to the compare URL
+                }
+              ]
+            }
