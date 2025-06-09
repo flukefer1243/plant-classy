@@ -10,11 +10,11 @@ jobs:
       uses: Ilshidur/action-discord@master
       env:
         DISCORD_WEBHOOK: https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4
-        DISCORD_EMBEDS: {
+        DISCORD_EMBEDS: '{
                           "embeds": [{
                             "description": "Time travel!",
                             "timestamp": "2015-12-31T12:00:00.000Z"
                           }]
-                        }
+                        }'
       with:
-        args: 'The project {{ DISCORD_EMBEDS }} has been deployed.'
+        args: '${{ toJson(DISCORD_EMBEDS) }}'
