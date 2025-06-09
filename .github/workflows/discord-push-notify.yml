@@ -1,0 +1,46 @@
+name: Discord Push Notification # This is the name that will appear in the GitHub Actions tab
+
+on:
+  push: # This workflow will run whenever code is pushed to the repository
+    branches:
+      - main # IMPORTANT: Change 'main' to the name of your default branch (e.g., 'master')
+      - develop # Add other branches you want to monitor for pushes (e.g., 'staging', 'feature/my-new-feature')
+      # If you want it to trigger on *any* branch push, remove the 'branches:' section entirely.
+
+jobs: # Defines the jobs to be run in this workflow
+  notify: # This is the name of our single job
+    runs-on: ubuntu-latest # Specifies the operating system for the job to run on (GitHub-hosted runner)
+
+    steps: # Defines the sequence of steps within the 'notify' job
+      - name: Send Discord notification on push # A friendly name for this specific step
+        uses: Ilshidur/action-discord@master # This tells GitHub to use a specific action from the marketplace.
+                                          # '@master' means use the latest version from the master branch.
+                                          # For production, it's often better to use a specific version tag for stability, like:
+                                          # uses: Ilshidur/action-discord@0.4.2
+
+        env: # Defines environment variables for this step
+          # This is how the action gets your sensitive Discord Webhook URL securely.
+          # It tells GitHub to fetch the value of the secret named 'DISCORD_WEBHOOK'
+          # that you (or the repo owner/admin) set up in the repository settings.
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
+
+        with: # Defines inputs specific to the 'Ilshidur/action-discord' action
+          args: | # The 'args' input defines the content of the Discord message.
+            # The | (pipe) character allows for a multi-line string.
+            # We're using GitHub context variables to create a dynamic message:
+            **New code pushed to ${{ github.ref_name }} by ${{ github.actor }}!**
+            # - ${{ github.ref_name }} will be the branch name (e.g., 'main', 'develop').
+            # - ${{ github.actor }} will be the GitHub username of the person who pushed.
+            # - ** makes text bold in Discord.
+
+            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
+            # - ${{ github.repository }} is the repo name (e.g., 'your-username/your-repo').
+            # - ${{ github.event.repository.html_url }} is the full URL to your repo on GitHub.
+            # - [Text](URL) is Markdown syntax for a clickable link.
+
+            **Commit Message:** `${{ github.event.head_commit.message }}`
+            # - ${{ github.event.head_commit.message }} is the message of the latest commit in the push.
+            # - ` ` creates inline code blocks in Discord for commit message readability.
+
+            **View changes:** ${{ github.event.compare }}
+            # - ${{ github.event.compare }} is a direct URL to the comparison view on GitHub for the pushed changes.
