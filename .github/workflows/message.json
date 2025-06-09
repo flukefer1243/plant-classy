@@ -1,0 +1,10 @@
+{
+    "content": "⚠️ A new push has occurred!",
+    "embeds": [
+        {
+            "title": "Code Push Notification",
+            "description": "Details of the latest push to the repository.",
+            "color": 3066993
+        }
+    ]
+}

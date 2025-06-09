@@ -2,15 +2,13 @@ name: Discord Push Notification # This is the name that will appear in the GitHu
 
 on: [push]
 
-jobs: 
-  notify: 
-    runs-on: ubuntu-latest 
-
-    steps: 
-      - uses: actions/checkout@master
-      - name: Send Discord notification on push # A friendly name for this specific step
-        uses: appleboy/discord-action@v1.2.0
-
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v7.0.0
         with:
           webhook_url: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
-          message: The ${{ github.event_name }} event triggered first step.
+          raw-data: message.json
