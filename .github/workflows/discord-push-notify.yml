@@ -1,71 +1,16 @@
 name: Discord Push Notification # This is the name that will appear in the GitHub Actions tab
 
-on:
-  push: # This workflow will run whenever code is pushed to the repository
-    branches:
-      - main # IMPORTANT: Change 'main' to the name of your default branch (e.g., 'master')
-      - develop # Add other branches you want to monitor for pushes (e.g., 'staging', 'feature/my-new-feature')
-      # If you want it to trigger on *any* branch push, remove the 'branches:' section entirely.
+on: [push]
 
-jobs: # Defines the jobs to be run in this workflow
-  notify: # This is the name of our single job
-    runs-on: ubuntu-latest # Specifies the operating system for the job to run on (GitHub-hosted runner)
+jobs: 
+  notify: 
+    runs-on: ubuntu-latest 
 
-    steps: # Defines the sequence of steps within the 'notify' job
+    steps: 
+      - uses: actions/checkout@master
       - name: Send Discord notification on push # A friendly name for this specific step
-        uses: Ilshidur/action-discord@master # This tells GitHub to use a specific action from the marketplace.
-                                          # '@master' means use the latest version from the master branch.
-                                          # For production, it's often better to use a specific version tag for stability, like:
-                                          # uses: Ilshidur/action-discord@0.4.2
+        uses: appleboy/discord-action@v1.2.0
 
-        env: # Defines environment variables for this step
-          # This is how the action gets your sensitive Discord Webhook URL securely.
-          # It tells GitHub to fetch the value of the secret named 'DISCORD_WEBHOOK'
-          # that you (or the repo owner/admin) set up in the repository settings.
-          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
-
-        with: # Defines inputs specific to the 'Ilshidur/action-discord' action
-          embeds:
-              - title: "✅ Successful Deployment to Production"
-                description: |
-                  The latest code has been deployed to the production environment.
-                  Please verify functionality.
-                color: 3066993 # Green color (decimal for #2ECC71)
-
-                author:
-                  name: "Deployment by ${{ github.actor }}"
-                  icon_url: "https://github.com/${{ github.actor }}.png" # User's GitHub avatar
-                  url: "https://github.com/${{ github.actor }}" # Link to user's profile
-
-                fields:
-                  - name: "Branch"
-                    value: "`ref_name: ${{ github.ref_name }}`"
-                    inline: true # Display next to the previous field if space allows
-                  - name: "Commit SHA"
-                    value: "`${{ github.sha }}`"
-                    inline: true
-                  - name: "Repository"
-                    value: "[${{ github.repository }}](${{ github.event.repository.html_url }})"
-                    inline: false # This field will be on its own line
-                  - name: "Commit Message"
-                    value: "```\n${{ github.event.head_commit.message }}\n```"
-                    inline: false # This field will also be on its own line
-                  - name: "Triggered by Event"
-                    value: "${{ github.event_name }}"
-                    inline: true
-                  - name: "Workflow Run Link"
-                    value: "[View Workflow Run](${ imprisonments://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} })"
-                    inline: true
-
-                thumbnail:
-                  url: "https://www.docker.com/wp-content/uploads/2022/03/Moby-logomark.png" # Example thumbnail
-
-                image:
-                  url: "https://octodex.github.com/images/octofez.png" # Example larger image
-
-                footer:
-                  text: "Deployed on"
-                  icon_url: "https://github.githubassets.com/favicons/favicon.png"
-                timestamp: "${{ github.event.head_commit.timestamp }}" # ISO8601 timestamp for the commit
-
-                url: "${{ github.event.compare }}" # Makes the main title clickable to the compare view
+        with:
+          webhook_url: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
+          message: The ${{ github.event_name }} event triggered first step.
