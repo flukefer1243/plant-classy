@@ -23,10 +23,49 @@ jobs: # Defines the jobs to be run in this workflow
           # It tells GitHub to fetch the value of the secret named 'DISCORD_WEBHOOK'
           # that you (or the repo owner/admin) set up in the repository settings.
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
-          DISCORD_EMBEDS: {
-                            title: "Meow!",
-                            color: 1127128
-                          }
 
-        # with: # Defines inputs specific to the 'Ilshidur/action-discord' action
-        #   args: "test"
+        with: # Defines inputs specific to the 'Ilshidur/action-discord' action
+          embeds:
+              - title: "✅ Successful Deployment to Production"
+                description: |
+                  The latest code has been deployed to the production environment.
+                  Please verify functionality.
+                color: 3066993 # Green color (decimal for #2ECC71)
+
+                author:
+                  name: "Deployment by ${{ github.actor }}"
+                  icon_url: "https://github.com/${{ github.actor }}.png" # User's GitHub avatar
+                  url: "https://github.com/${{ github.actor }}" # Link to user's profile
+
+                fields:
+                  - name: "Branch"
+                    value: "`ref_name: ${{ github.ref_name }}`"
+                    inline: true # Display next to the previous field if space allows
+                  - name: "Commit SHA"
+                    value: "`${{ github.sha }}`"
+                    inline: true
+                  - name: "Repository"
+                    value: "[${{ github.repository }}](${{ github.event.repository.html_url }})"
+                    inline: false # This field will be on its own line
+                  - name: "Commit Message"
+                    value: "```\n${{ github.event.head_commit.message }}\n```"
+                    inline: false # This field will also be on its own line
+                  - name: "Triggered by Event"
+                    value: "${{ github.event_name }}"
+                    inline: true
+                  - name: "Workflow Run Link"
+                    value: "[View Workflow Run](${ imprisonments://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} })"
+                    inline: true
+
+                thumbnail:
+                  url: "https://www.docker.com/wp-content/uploads/2022/03/Moby-logomark.png" # Example thumbnail
+
+                image:
+                  url: "https://octodex.github.com/images/octofez.png" # Example larger image
+
+                footer:
+                  text: "Deployed on"
+                  icon_url: "https://github.githubassets.com/favicons/favicon.png"
+                timestamp: "${{ github.event.head_commit.timestamp }}" # ISO8601 timestamp for the commit
+
+                url: "${{ github.event.compare }}" # Makes the main title clickable to the compare view
