@@ -24,10 +24,8 @@ jobs: # Defines the jobs to be run in this workflow
           # that you (or the repo owner/admin) set up in the repository settings.
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
           DISCORD_EMBEDS: {
-                            embeds: [{
-                              title: "Hello!",
-                              description: "Hi! :grinning:"
-                            }]
+                            title: "Meow!",
+                            color: 1127128
                           }
 
         # with: # Defines inputs specific to the 'Ilshidur/action-discord' action
