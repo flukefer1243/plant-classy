@@ -1,9 +1,8 @@
 {   
-    "content": "Test",
     "embeds": [
         {
             "title": "⚠️ A new push has occurred!",
-            "description": "Details of the latest push to the repository.",
+            "description": "Details of the latest push to the repository."
         }
     ]
 }
