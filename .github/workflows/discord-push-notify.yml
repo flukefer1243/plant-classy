@@ -25,43 +25,31 @@ jobs: # Defines the jobs to be run in this workflow
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1381602440872329256/3jlZKe94gtfGkSkbTYxf7SnK1byyA87r9W2GxYelJ-ioFgHU2XK8Wud6HJiFGPSFjNu4"
 
         with: # Defines inputs specific to the 'Ilshidur/action-discord' action
-          args: |
-            {
-              "content": "A new push has occurred!",
-              "username": "GitHub Actions Notifier",
-              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-              "embeds": [
-                {
-                  "title": "Code Push Notification",
-                  "description": "Details of the latest push to the repository.",
-                  "color": 3066993, # A nice green color (decimal for #2ECC71)
-                  "author": {
-                    "name": "${{ github.actor }}",
-                    "icon_url": "https://github.com/${{ github.actor }}.png" # Fetch user's GitHub avatar
-                  },
-                  "fields": [
-                    {
-                      "name": "Branch",
-                      "value": "`${{ github.ref_name }}`",
-                      "inline": true
-                    },
-                    {
-                      "name": "Repository",
-                      "value": "[${{ github.repository }}](${{ github.event.repository.html_url }})",
-                      "inline": true
-                    },
-                    {
-                      "name": "Commit Message",
-                      "value": "```\n${{ github.event.head_commit.message }}\n```",
-                      "inline": false
-                    }
-                  ],
-                  "timestamp": "${{ github.event.head_commit.timestamp }}", # Use the commit timestamp
-                  "footer": {
-                    "text": "View changes on GitHub",
-                    "icon_url": "https://github.githubassets.com/favicons/favicon.png"
-                  },
-                  "url": "${{ github.event.compare }}" # Make the title clickable to the compare URL
-                }
-              ]
-            }
+          args:
+            # The JSON starts here, make sure its indentation aligns with 'args'
+            # (or is further indented)
+            content: "A new push has occurred!"
+            username: "GitHub Actions Notifier"
+            avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            embeds:
+              - title: "Code Push Notification"
+                description: "Details of the latest push to the repository."
+                color: 3066993 # A nice green color (decimal for #2ECC71)
+                author:
+                  name: "${{ github.actor }}"
+                  icon_url: "https://github.com/${{ github.actor }}.png" # Fetch user's GitHub avatar
+                fields:
+                  - name: "Branch"
+                    value: "`${{ github.ref_name }}`"
+                    inline: true
+                  - name: "Repository"
+                    value: "[${{ github.repository }}](${{ github.event.repository.html_url }})"
+                    inline: true
+                  - name: "Commit Message"
+                    value: "```\n${{ github.event.head_commit.message }}\n```"
+                    inline: false
+                timestamp: "${{ github.event.head_commit.timestamp }}" # Use the commit timestamp
+                footer:
+                  text: "View changes on GitHub"
+                  icon_url: "https://github.githubassets.com/favicons/favicon.png"
+                url: "${{ github.event.compare }}" # Make the title clickable to the compare URL
