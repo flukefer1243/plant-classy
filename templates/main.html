@@ -1,0 +1,317 @@
+{% extends "layout.html" %}
+{% block title %}Main{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<script>
+    alert("{{ message }}");
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<style>
+    .res-div {
+        margin-top: 5%;
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+
+    .res-img {
+        width: 180px;
+        height: 180px;
+    }
+
+    @media (max-width: 768px) {
+        .res-div {
+            margin-top: 10%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .res-img {
+            width: 110px;
+            height: 110px;
+        }
+    }
+</style>
+<div class="row res-div">
+    <div class="col-sm">
+        <div class="mb-3" style="text-align: center;">
+            <img class="rounded" id="imagePreview" src="{{ url_for('static', filename='img/default.jpg') }}"
+                height="auto" width="50%">
+        </div>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                    <h3>Upload</h3>
+                </button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
+                    <h3>Sample</h3>
+                </button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                tabindex="0">
+                <form action="{{ url_for('prediction') }}" id="data" name="data" method="POST"
+                    enctype="multipart/form-data">
+                    <div class="row">
+                        <input class="form-control mb-3" name="pimg" type="file" id="formFile"
+                            onchange="previewImage(event)">
+                        <div class="mb-3">
+                            <div class="row">
+                                <label for="exampleFormControlInput1" class="form-label bold-font">Plant
+                                    species</label>
+                                <div class="col-sm">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="species"
+                                            id="flexRadioDefault1" value="1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Tomato
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="species"
+                                            id="flexRadioDefault2" value="2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Sugarcane
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="species"
+                                            id="flexRadioDefault3" value="3">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Corn
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary bold-font" id="btnSubmit" onclick="showLoading();"> >>
+                        Submit</button>
+                    <button class="btn btn-primary bold-font" style="display: none;" id="btnLoading">
+                        <span class="spinner-border spinner-border-sm"></span>
+                        Loading..
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="tab-pane fade p-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+        <div class="row">
+            <div class="nav nav-pills mb-3" id="nav-tab" role="tablist">
+                <div class="nav-item ">
+                    <button class="nav-link active" id="nav-tomato-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-tomato" type="button" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Tomato</button>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-link " id="nav-sugarcane-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-sugarcane" type="button" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Sugarcane</button>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-link " id="nav-corn-tab" data-bs-toggle="tab" data-bs-target="#nav-corn"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Corn</button>
+                </div>
+            </div>
+            <div class="tab-content mb-3 rounded border" id="nav-tabContent">
+                <div class="tab-pane p-3 mb-3 show active" id="nav-tomato" role="tabpanel" aria-labelledby="nav-tomato"
+                    tabindex="0" style="height: 400px; overflow-y: scroll;">
+                    <div class="row mx-auto">
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/healthy.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/healthy.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Healthy</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/bacterial-spot.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/bacterial-spot.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Bacterial Spot</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/early-blight.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/early-blight.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Early Blight</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/late-blight.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/late-blight.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Late Blight</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/mold-leaf.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/mold-leaf.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Mold Leaf</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/mosaic-virus.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/mosaic-virus.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Mosaic Virus</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/septoria-leaf-spot.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/septoria-leaf-spot.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Septoria</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/spider-mites.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/spider-mites.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Spider Mites</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/target-spot.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/target-spot.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Target Spot</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/tomato/yellow-virus.jpg', 1)">
+                            <img src="{{ url_for('static', filename='img/samples/tomato/yellow-virus.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Yellow Virus</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade p-3" id="nav-sugarcane" role="tabpanel" aria-labelledby="nav-sugarcane"
+                    tabindex="0" style="height: 400px; overflow-y: scroll;">
+                    <div class="row mx-auto">
+                        <div class="res-img text-center" onclick="showSamples('img/samples/sugarcane/healthy.jpg', 2)">
+                            <img src="{{ url_for('static', filename='img/samples/sugarcane/healthy.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Healthy</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/sugarcane/mosaic.jpg', 2)">
+                            <img src="{{ url_for('static', filename='img/samples/sugarcane/mosaic.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Mosaic</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/sugarcane/redrot.jpg', 2)">
+                            <img src="{{ url_for('static', filename='img/samples/sugarcane/redrot.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Red Rot</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/sugarcane/rust.jpg', 2)">
+                            <img src="{{ url_for('static', filename='img/samples/sugarcane/rust.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Rust</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/sugarcane/yellow.jpg', 2)">
+                            <img src="{{ url_for('static', filename='img/samples/sugarcane/yellow.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Yellow Virus</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade p-3 mb-3" id="nav-corn" role="tabpanel" aria-labelledby="nav-corn"
+                    tabindex="0" style="height: 400px; overflow-y: scroll;">
+                    <div class="row mx-auto">
+                        <div class="res-img text-center" onclick="showSamples('img/samples/corn/healthy.jpg', 3)">
+                            <img src="{{ url_for('static', filename='img/samples/corn/healthy.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Healthy</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/corn/common-rust.jpg', 3)">
+                            <img src="{{ url_for('static', filename='img/samples/corn/common-rust.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Common Rust</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/corn/cercospora-leaf-spot.jpg', 3)">
+                            <img src="{{ url_for('static', filename='img/samples/corn/cercospora-leaf-spot.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Cercospora</p>
+                        </div>
+                        <div class="res-img text-center" onclick="showSamples('img/samples/corn/northern-leaf-blight.jpg', 3)">
+                            <img src="{{ url_for('static', filename='img/samples/corn/northern-leaf-blight.jpg') }}"
+                                class="img-thumbnail border-0">
+                            <p>Northern Blight</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <form id="formSamples" name="formSamples" action="{{ url_for('predictionSamples') }}" method="POST">
+                    <div style="display: none;">
+
+                        <input type="text" name="pathSamples" id="pathSamples" value="">
+                        <input type="number" name="speciesSamples" id="speciesSamples" value=0>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary bold-font" id="btnSubmitSamples"
+                    onclick="showLoadingSamples();"> >>
+                    Submit</button>
+                <button class="btn btn-primary bold-font" style="display: none;" id="btnLoadingSamples">
+                    <span class="spinner-border spinner-border-sm"></span>
+                    Loading..
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var imagePreview = document.getElementById('imagePreview');
+        var file = event.target.files[0];
+
+        // Display the image only if a file is selected
+        if (file) {
+            var reader = new FileReader();
+
+            // When the image is loaded, display it in the img tag
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                // imagePreview.style.display = 'block';
+            }
+
+            // Read the file as a Data URL (base64 encoded image)
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function showLoading() {
+        var dataForm = document.getElementById("data");
+        var btnLoading = document.getElementById('btnLoading');
+        var btnSubmit = document.getElementById('btnSubmit');
+        btnLoading.style.display = 'block';
+        btnSubmit.style.display = 'none';
+        dataForm.submit();
+    }
+
+    function showLoadingSamples() {
+        var dataFormSamples = document.getElementById("formSamples");
+        var btnLoadingSamples = document.getElementById('btnLoadingSamples');
+        var btnSubmitSamples = document.getElementById('btnSubmitSamples');
+        btnLoadingSamples.style.display = 'block';
+        btnSubmitSamples.style.display = 'none';
+        dataFormSamples.submit();
+    }
+
+    function showSamples(imagePath, speciesValue) {
+        // show preview image
+        var imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = '/static/' + imagePath;
+
+        // assign value
+        var pathSamples = document.getElementById("pathSamples");
+        pathSamples.value = imagePath;
+        var speciesSamples = document.getElementById("speciesSamples");
+        speciesSamples.value = speciesValue
+
+    }
+</script>
+
+{% endblock %}

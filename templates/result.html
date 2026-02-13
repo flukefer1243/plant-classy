@@ -1,11 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Classy</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Result{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<style>
+    .res-div {
+        margin-top: 5%;
+        margin-left: 25%;
+        margin-right: 25%;
+    }
+
+    @media (max-width: 768px) {
+        .res-div {
+            margin-top: 10%;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+    }
+</style>
+<div class="row res-div">
+    <div class="col-sm">
+        <div class="mb-3" style="text-align: center;">
+            {% if filepath %}
+            <img class="rounded" id="imagePreview" src="{{ url_for('static', filename=filepath) }}" height="auto"
+                width="50%">
+            {% else %}
+            <img class="rounded" id="imagePreview" src="{{ url_for('static', filename='img/default.jpg') }}"
+                height="auto" width="50%">
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <h3 class="mb-3">Plant species <i class="fa fa-pagelines" aria-hidden="true"></i></h3>
+            <p class="mb-3" style="font-size: larger; margin-left: 2%;">{% if species %} {{ species }} {% endif %}</p>
+            <h3 class="mb-3">Probability of prediction</h3>
+            <div class="row">
+                {% if result_prob %}
+                {% for key, value in result_prob.items() %}
+                {% if loop.first %}
+                <div class="col-sm-3 mb-3" style="font-size: large;">
+                    <i class="fa fa-heartbeat" aria-hidden="true"></i> {{ value }}% <br> {{ key }}
+                </div>
+                {% else %}
+                <div class="col-sm-3 mb-3" style="font-size: medium;">
+                    <i class="fa fa-caret-right" aria-hidden="true"></i> {{ value }}% <br> {{ key }}
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <div class="col-sm" style="font-size: large;">
+                    First disease, 80%
+                </div>
+                <div class="col-sm" style="font-size: medium;">
+                    Second disease, 10%
+                </div>
+                <div class="col-sm" style="font-size: medium;">
+                    Third disease, 5%
+                </div>
+                <div class="col-sm" style="font-size: medium;">
+                    Fourth disease, 5%
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <a href="{{ url_for('index') }}" type="button" class="btn btn-primary">
+                <i class="fa fa-home" aria-hidden="true"></i> Home Page
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

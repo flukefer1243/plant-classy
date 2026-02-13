@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block title %}About Us{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style>
+    .team-member-img {
+      width: 150px; /* Adjust as needed */
+      height: 150px; /* Adjust as needed */
+      object-fit: cover;
+      border-radius: 50%; /* Makes the image circular */
+      margin-bottom: 1rem;
+    }
+    .section-divider {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      border: 0;
+      border-top: 1px solid rgba(0,0,0,.1);
+    }
+    .about-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-top: 1rem; /* Add some space from the navbar */
+    }
+    .about-header h1 {
+        font-family: "boldFont", serif; /* Using your custom bold font */
+    }
+    .card-title {
+        font-family: "boldFont", serif; /* Using your custom bold font for card titles */
+    }
+    .affiliation-section, .funding-section {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f8f9fa; /* Light background for these sections */
+        border-radius: .25rem;
+    }
+    .affiliation-section h3, .funding-section h3 {
+        font-family: "boldFont", serif;
+        margin-bottom: 1rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="about-header">
+    <h1><i class="fa fa-info-circle" aria-hidden="true"></i> About Our Project</h1>
+    <p class="lead">
+      Plant Classy is a Master's thesis project, with research submitted to IEEE Access, demonstrating a novel hybrid classification system. Our work focuses on distinguishing valuable deep features for more accurate and effective plant disease diagnosis across various species. <a href="https://doi.org/10.1109/ACCESS.2025.3569760" target="_blank" class="fs-6">(Read more)</a>
+    </p>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2 class="text-center mb-4 bold-font">Our Team</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4 mb-4">
+      <div class="card h-100 text-center shadow-sm">
+        <div class="card-body">
+          <img src="{{ url_for('static', filename='img/dev_edit.jpg') }}" alt="Your Name" class="team-member-img rounded" height="250px"> <h5 class="card-title">Mr. Phanthawat Phiphatkamtorn</h5>
+          <p class="card-text"><em>Student Researcher / Developer</em></p>
+          <p class="card-text">Developing the Plant Classy application and researching the hybrid classification model and feature selection using statistical methods for plant disease identification.</p>
+           <a href="https://cv-app-eight-peach.vercel.app/" target="_blank" class="btn btn-outline-primary btn-sm mt-2">
+            <i class="fa fa-user-circle" aria-hidden="true"></i>
+            CV </a>
+          <a href="https://orcid.org/0009-0002-4159-6552" target="_blank" class="btn btn-outline-success btn-sm mt-2">
+            <img src="{{ url_for('static', filename='img/orcid.png') }}" alt="Icon Description" width="20" height="20" class="me-2">
+            ORCID </a>
+          <a href="mailto:phanthawatp65@nu.ac.th" class="btn btn-outline-primary btn-sm mt-2"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-md-5 col-lg-4 mb-4">
+      <div class="card h-100 text-center shadow-sm">
+        <div class="card-body">
+          <img src="{{ url_for('static', filename='img/advisor.png') }}" alt="Advisor's Name" class="team-member-img rounded" height="250px"> <h5 class="card-title">Asst.Prof.Dr.Sutasinee Jitanan</h5>
+          <p class="card-text"><em>Project Advisor</em></p>
+          <p class="card-text">Providing expert guidance and supervision for the Plant Classy project, specializing in image processing and computer vision.</p>
+          <a href="https://orcid.org/0000-0001-5371-8911" target="_blank" class="btn btn-outline-success btn-sm mt-2">
+            <img src="{{ url_for('static', filename='img/orcid.png') }}" alt="Icon Description" width="20" height="20" class="me-2">
+            ORCID </a>
+          <a href="https://scholar.google.com/citations?user=1z0iPloAAAAJ&hl=th&oi=ao" target="_blank" class="btn btn-outline-primary btn-sm mt-2">
+            <img src="{{ url_for('static', filename='img/google-scholar.png') }}" alt="Icon Description" width="20" height="20" class="me-2">
+            Google Scholar </a>
+          <a href="mailto:sutasineec@nu.ac.th" target="_blank" class="btn btn-outline-primary btn-sm mt-2"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <div class="affiliation-section text-center">
+    <h3 class="mb-3"><i class="fa fa-university" aria-hidden="true"></i> Our Affiliation</h3>
+    <p class="lead">This project is proudly affiliated with:</p>
+    <p>Department of <strong>Computer Science and Information Technology</strong></p>
+    <p>Faculty of <strong>Science</strong></p>
+    <h4><strong>Naresuan University, Thailand</strong></h4>
+    </div>
+
+  <hr class="section-divider">
+
+  <div class="funding-section text-center">
+    <h3 class="mb-3"><i class="fa fa-users" aria-hidden="true"></i> Acknowledgements & Support</h3>
+    <!-- <p class="lead">We gratefully acknowledge the support provided by:</p> -->
+    <p>This work was supported in part by the <strong>Development and Promotion for Science and Technology Talents Project</strong> and <strong>Naresuan University, Thailand (Fundamental Fund)</strong>.</p>
+    </div>
+
+</div>
+{% endblock %}

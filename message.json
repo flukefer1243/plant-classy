@@ -1,9 +1,0 @@
-{   
-    "embeds": [
-        {
-            "title": "⚠️ A new push has occurred!",
-            "description": "Details of the latest push to the repository.",
-            "timestamp": "${{ github.event.head_commit.timestamp }}"
-        }
-    ]
-}
