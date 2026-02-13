@@ -1,5 +1,9 @@
 __pycache__
 env
 
-static/dl-models
-static/ml-models
+static/dl-models/corn/*
+static/dl-models/sugarcane/*
+static/dl-models/tomato/*
+static/ml-models/corn/*
+static/ml-models/sugarcane/*
+static/ml-models/tomato/*
